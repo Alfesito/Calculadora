@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculadora</title>
+  <meta charset="utf-8">
+  <script type="text/javascript">
+
+      const rellenar_info = (x) => {
+          if(x<100){
+            document.getElementById("info").innerHTML = "Info: El resultado es menor que 100";
+          }else if(100>=x || x<=200){
+            document.getElementById("info").innerHTML = "Info: El resultado está entre 100 y 200";
+          }else if(x>200){
+            document.getElementById("info").innerHTML = "Info: El resultado es superior a 200";
+          }else{
+            document.getElementById("info").innerHTML = "Info sobre el número";
+          }
+      }
+      
+
+    const vaciar = () => {
+      document.getElementById("pantalla").value = "";
+      document.getElementById("info").innerHTML = "Info sobre el número";
+    }
+
+    
+    const cuadrado = () => {
+      let num = document.getElementById("pantalla");
+      num.value = num.value * num.value;
+      validar();
+      rellenar_info(num.value); 
+    }
+
+    const mod = () => {
+      let num = document.getElementById("pantalla");
+        if(num.value < 0 ){
+          num.value = (-1)*num.value;
+        }else if (num.value >= 0){
+          num.value = num.value;
+        }else{
+          num.value = "NaN"
+        }
+        validar();
+        rellenar_info(num.value);
+    }
+
+    const fact = () => {
+      let num = document.getElementById("pantalla");
+      let factorial = 1;
+      if(num.value > 1){
+          for(let i = 1; i <= num.value; i++){
+            factorial *= i;
+          }
+          num.value = factorial;
+      }else if(num.value === "0" || num.value === "1"){
+        num.value = factorial;
+      }else{
+        num.value = "NaN"
+      }
+      validar();
+      rellenar_info(num.value);
+    }
+
+    //Operaciones binarias:
+    let op1 = undefined;
+    let funcion = undefined;
+    
+    const mul = () => {
+      let num = document.getElementById("pantalla");
+      op1 = +num.value;
+      funcion="mul";
+      num.value = op1;
+      validar();
+    }
+
+    const add = () => {
+      let num = document.getElementById("pantalla");
+      op1 = +num.value;
+      funcion = "add";
+      num.value = op1;
+      validar();
+    }
+
+    const eq = () => {
+      let num = document.getElementById("pantalla");
+      if(op1 !== undefined && funcion === "mul"){
+        num.value = +op1 * +num.value;
+      }else if(op1 !== undefined && funcion === "add"){
+        num.value = +op1 + +num.value;
+      }
+      validar();
+      rellenar_info(num.value);
+      op1 = undefined;
+      funcion = undefined;
+    }
+
+    //Operaciones en formato CSV
+    const sumatorio = () => {
+      let num = document.getElementById("pantalla");
+      let list = num.value.split(",");
+      let tot = 0;
+      let i = 0;
+      while(i < list.length){
+        tot += +list[i++];
+      }
+      num.value = tot;
+      validar();
+      rellenar_info(num.value);
+    }
+
+    const ordenar = () => {
+      let num = document.getElementById("pantalla");
+      let list = num.value.split(",");
+      let ord = list.sort();
+      sumatorio();
+      if(num.value === "Error"){
+        num.value = "NaN";
+      }else{
+        num.value = ord;
+      }
+      validar();
+    }
+
+    const revertir = () => {
+      let num = document.getElementById("pantalla");
+      let list = num.value.split(",");
+      let rev = list.reverse();
+      sumatorio();
+      if(num.value === "Error"){
+        num.value = "NaN";
+      }else{
+        num.value = rev;
+      }
+      validar();
+    }
+
+    const quitar = () => {
+      let num = document.getElementById("pantalla");
+      let list = num.value.split(",");
+      let elim = list.pop();
+      sumatorio();
+      if(num.value === "Error"){
+        num.value = "NaN";
+      }else{
+        num.value = list;
+      } 
+      validar();
+    }
+
+    //Tratamiento de errores
+    const validar = () => {
+      let num = document.getElementById("pantalla");
+      let list = num.value.split(",");
+      let i = 0;
+      let sum = 0;
+      if(num.value === "NaN"){
+        num.value = "Error";
+        op1 = undefined;
+        funcion = undefined;
+      }
+      
+    }
+    
+    
+  </script>
+</head>
+<body>
+  Número:
+  <input type="text" id="pantalla" onclick="vaciar()">
+  
+  <h2 id ="info" class="grande" title="Info sobre el número">Info sobre el número</h2>
+  <h3>Operaciones unitarias</h3>
+  <button id="cuadrado" onclick="cuadrado()">x<sup>2</sup></button>
+  <button id="modulo" onclick="mod()">|x|</button>
+  <button id="factorial" onclick="fact()">x!</button>
+
+  <h3>Operaciones binarias</h3>
+  <button id="multiplicacion" onclick="mul()">*</button>
+  <button id="suma" onclick="add()">+</button>
+  <button id="igual" onclick="eq()">=</button>
+
+  <h3>Operaciones en formato CSV</h3>
+  <button id="sumatorio" onclick="sumatorio()">Sumatorio</button>
+  <button id="ordenar" onclick="ordenar()">Ordenar</button>
+  <button id="revertir" onclick="revertir()">Revertir</button>
+  <button id="quitar" onclick="quitar()">Quitar</button>
+  
+</body>
+</html>
